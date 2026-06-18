@@ -446,8 +446,8 @@ function renderIntake() {
         <div class="card-icon">🌾</div>
         <div><div class="card-title">Future Founders Assessment</div><div class="card-subtitle">Takes about 8–10 minutes — there are no right or wrong answers</div></div>
       </div>
-      <p class="intro-text">This short assessment helps the Future Founders team understand where you're at so we can make the program as useful as possible for you. We'll ask you to do it at the start and end of the program so we can see how much you've grown.</p>
-      <div class="intro-highlight">✅ Your answers are confidential and used only by the Future Founders team. Be honest — this isn't a test!</div>
+      <p class="intro-text">This short assessment helps the Future Founders team understand where you are at so we can make the program as useful as possible for you. We will ask you to do it at the start and end of the program so we can see how much you have grown.</p>
+      <div class="intro-highlight">✅ Your answers are confidential and used only by the Future Founders team. Be honest — this is not a test!</div>
       <div class="form-row">
         <div class="form-group"><label>Your full name *</label><input type="text" id="i-name" placeholder="First and last name" value="${state.intake.name}"></div>
         <div class="form-group"><label>Your age *</label>
@@ -484,7 +484,7 @@ function renderIntake() {
           <option value="End of program" ${state.intake.type==='End of program'?'selected':''}>End of program</option>
         </select>
       </div>
-      <div class="nav-buttons"><button class="btn btn-primary" onclick="startAssessment()">Let's get started →</button></div>
+      <div class="nav-buttons"><button class="btn btn-primary" onclick="startAssessment()">Let us get started →</button></div>
     </div>`;
 }
 
@@ -564,37 +564,61 @@ function renderMentor() {
   const isPre = state.intake.type === 'Start of program';
   const qs = isPre ? mentorQuestions.pre : mentorQuestions.post;
   const intro = isPre
-    ? 'During the program you'll be matched with an industry mentor — someone working in an emerging agricultural industry who can share their experience and support you. These questions help us make the best possible match and set you up for a great mentoring experience.'
-    : 'We'd love to hear how the mentoring went for you. Your feedback helps us improve the experience for future Future Founders participants.';
-  return \`
-    <div class="progress-label">Almost there!</div>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:88%"></div></div>
-    <div class="card">
-      <div class="section-tag">\${isPre ? 'Mentor matching' : 'Mentoring feedback'}</div>
-      <div class="card-header">
-        <div class="card-icon">\${isPre ? '🤝' : '💬'}</div>
-        <div><div class="card-title">\${isPre ? 'Your Industry Mentor' : 'How did the mentoring go?'}</div>
-        <div class="card-subtitle">\${isPre ? 'Help us match you with the right person' : 'Share your experience'}</div></div>
-      </div>
-      <p class="intro-text" style="margin-bottom:20px;">\${intro}</p>
-      \${qs.map(q => renderMentorQ(q)).join('')}
-      <div class="nav-buttons">
-        <button class="btn btn-secondary" onclick="backFromMentor()">← Back</button>
-        <button class="btn btn-primary" onclick="nextFromMentor()">\${isPre ? 'See my results →' : 'Almost done →'}</button>
-      </div>
-    </div>\`;
+    ? 'During the program you will be matched with an industry mentor — someone working in an emerging agricultural industry who can share their experience and support you. These questions help us make the best possible match and set you up for a great mentoring experience.'
+    : 'We would love to hear how the mentoring went for you. Your feedback helps us improve the experience for future Future Founders participants.';
+  const sectionTag = isPre ? 'Mentor matching' : 'Mentoring feedback';
+  const icon = isPre ? '🤝' : '💬';
+  const title = isPre ? 'Your Industry Mentor' : 'How did the mentoring go?';
+  const sub = isPre ? 'Help us match you with the right person' : 'Share your experience';
+  let html = '';
+  html += '<div class="progress-label">Almost there!</div>';
+  html += '<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:88%"></div></div>';
+  html += '<div class="card">';
+  html += '<div class="section-tag">' + sectionTag + '</div>';
+  html += '<div class="card-header">';
+  html += '<div class="card-icon">' + icon + '</div>';
+  html += '<div><div class="card-title">' + title + '</div>';
+  html += '<div class="card-subtitle">' + sub + '</div></div></div>';
+  html += '<p class="intro-text" style="margin-bottom:20px;">' + intro + '</p>';
+  qs.forEach(function(q) { html += renderMentorQ(q); });
+  html += '<div class="nav-buttons">';
+  html += '<button class="btn btn-secondary" onclick="backFromMentor()">← Back</button>';
+  html += '<button class="btn btn-primary" onclick="nextFromMentor()">' + (isPre ? 'See my results →' : 'Almost done →') + '</button>';
+  html += '</div></div>';
+  return html;
 }
 
 function renderMentorQ(q) {
   const val = state.mentorData[q.id];
+  let out = '';
   if (q.type === 'checkbox') {
     const checked = val || [];
-    return \`<div class="question"><label>\${q.label}</label><div class="options">\${q.options.map((opt,i)=>\`<label class="check-item \${checked.includes(i)?'checked':''}" style="display:flex;margin-bottom:0"><input type="checkbox" \${checked.includes(i)?'checked':''} onchange="toggleMentorCheck('\${q.id}',\${i})"><span>\${opt}</span></label>\`).join('')}</div></div>\`;
+    out = '<div class="question"><label>' + q.label + '</label><div class="options">';
+    q.options.forEach(function(opt, i) {
+      const isChecked = checked.includes(i);
+      out += '<label class="check-item' + (isChecked ? ' checked' : '') + '" style="display:flex;margin-bottom:0">';
+      out += '<input type="checkbox"' + (isChecked ? ' checked' : '') + ' onchange="toggleMentorCheck(\'' + q.id + '\',' + i + ')">';
+      out += '<span>' + opt + '</span></label>';
+    });
+    out += '</div></div>';
+  } else if (q.type === 'options') {
+    out = '<div class="question"><label>' + q.label + '</label><div class="options">';
+    q.options.forEach(function(opt, i) {
+      out += '<div class="option' + (val === i ? ' selected' : '') + '" onclick="setMentorOption(\'' + q.id + '\',' + i + ')">';
+      out += '<div class="radio"></div>' + opt + '</div>';
+    });
+    out += '</div></div>';
+  } else if (q.type === 'textarea') {
+    out = '<div class="question"><label>' + q.label + '</label>';
+    out += '<textarea id="mq-' + q.id + '" placeholder="' + (q.placeholder || '') + '" oninput="saveMentorText(\'' + q.id + '\')">' + (val || '') + '</textarea></div>';
+  } else if (q.type === 'scale') {
+    out = '<div class="question"><label>' + q.label + '</label><div class="scale-row">';
+    for (let n = q.min; n <= q.max; n++) {
+      out += '<button class="scale-btn' + (val === n ? ' selected' : '') + '" onclick="setMentorScale(\'' + q.id + '\',' + n + ')">' + n + '</button>';
+    }
+    out += '</div><div class="scale-labels"><span>' + q.lowLabel + '</span><span>' + q.highLabel + '</span></div></div>';
   }
-  if (q.type === 'options') return \`<div class="question"><label>\${q.label}</label><div class="options">\${q.options.map((opt,i)=>\`<div class="option \${val===i?'selected':''}" onclick="setMentorOption('\${q.id}',\${i})"><div class="radio"></div>\${opt}</div>\`).join('')}</div></div>\`;
-  if (q.type === 'textarea') return \`<div class="question"><label>\${q.label}</label><textarea id="mq-\${q.id}" placeholder="\${q.placeholder||''}" oninput="saveMentorText('\${q.id}')">\${val||''}</textarea></div>\`;
-  if (q.type === 'scale') { const nums=Array.from({length:q.max-q.min+1},(_,i)=>i+q.min); return \`<div class="question"><label>\${q.label}</label><div class="scale-row">\${nums.map(n=>\`<button class="scale-btn \${val===n?'selected':''}" onclick="setMentorScale('\${q.id}',\${n})">\${n}</button>\`).join('')}</div><div class="scale-labels"><span>\${q.lowLabel}</span><span>\${q.highLabel}</span></div></div>\`; }
-  return '';
+  return out;
 }
 
 function toggleMentorCheck(id, idx) { if(!state.mentorData[id])state.mentorData[id]=[]; const a=state.mentorData[id]; const p=a.indexOf(idx); if(p>-1)a.splice(p,1); else a.push(idx); render(); }
@@ -618,9 +642,9 @@ function renderPost() {
       <div class="section-tag">End of program</div>
       <div class="card-header">
         <div class="card-icon">🎉</div>
-        <div><div class="card-title">A few final questions</div><div class="card-subtitle">Help us understand what's changed for you</div></div>
+        <div><div class="card-title">A few final questions</div><div class="card-subtitle">Help us understand what is changed for you</div></div>
       </div>
-      <p class="intro-text" style="margin-bottom:20px;">You've completed the assessment questions — nice work! Now we'd love to know a bit more about what the program has meant for you.</p>
+      <p class="intro-text" style="margin-bottom:20px;">You have completed the assessment questions — nice work! Now we'd love to know a bit more about what the program has meant for you.</p>
       ${postQuestions.map(q => renderPostQuestion(q)).join('')}
       <div class="nav-buttons">
         <button class="btn btn-secondary" onclick="backToAssessment()">← Back</button>
@@ -658,7 +682,7 @@ function renderResults() {
         <div class="card-icon">🌟</div>
         <div><div class="card-title">${state.intake.name} — ${state.intake.type}</div><div class="card-subtitle">Age ${state.intake.age} · ${state.intake.location} · Overall: ${overall}%</div></div>
       </div>
-      ${isPre ? `<div class="intro-highlight" style="margin-bottom:16px;">This is your <strong>starting point</strong> — there are no right or wrong scores here. We'll ask you to complete this again at the end of the program so you can see how far you've come! 🚀</div>` : `<div class="intro-highlight" style="margin-bottom:16px;">Look how far you've come! 🎉 Compare these results with your start-of-program scores to see your growth.</div>`}
+      ${isPre ? `<div class="intro-highlight" style="margin-bottom:16px;">This is your <strong>starting point</strong> — there are no right or wrong scores here. We will ask you to complete this again at the end of the program so you can see how far you have come! 🚀</div>` : `<div class="intro-highlight" style="margin-bottom:16px;">Look how far you have come! 🎉 Compare these results with your start-of-program scores to see your growth.</div>`}
       <div class="radar-wrap"><canvas id="radarChart" width="360" height="360"></canvas></div>
       <div class="results-grid">${sorted.map(dim=>`<div class="result-card ${getClass(state.scores[dim.id])}"><div class="result-label">${dim.icon} ${dim.label}</div><div class="result-score">${state.scores[dim.id]}%</div>${getTag(state.scores[dim.id])}</div>`).join('')}</div>
     </div>
@@ -680,7 +704,7 @@ function renderResults() {
       <div id="submit-success" class="submit-success">
         <div class="tick">🌟</div>
         <strong>Results submitted — thank you!</strong><br>
-        <span style="font-size:13px;opacity:0.85;">The Future Founders team will be in touch. You're doing great!</span>
+        <span style="font-size:13px;opacity:0.85;">The Future Founders team will be in touch. You are doing great!</span>
       </div>
       <div style="margin-top:14px;"><button class="btn btn-secondary" onclick="restart()" style="width:100%;margin-top:8px;background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.2);">Start again</button></div>
     </div>`;
@@ -715,7 +739,7 @@ Score: ${score}%
 Their answers:
 ${answers}
 
-Write 3–4 sentences of warm, encouraging and practical feedback. This is a young person at the start of their journey — your tone should feel like a supportive mentor, not a formal assessor. Acknowledge where they're at, point to one area to focus on, and give one specific, actionable suggestion they can act on now. Keep language simple, friendly and energising. Never make them feel bad about low scores — frame everything as opportunity and growth.`;
+Write 3–4 sentences of warm, encouraging and practical feedback. This is a young person at the start of their journey — your tone should feel like a supportive mentor, not a formal assessor. Acknowledge where they are at, point to one area to focus on, and give one specific, actionable suggestion they can act on now. Keep language simple, friendly and energising. Never make them feel bad about low scores — frame everything as opportunity and growth.`;
   try {
     const res = await fetch('/.netlify/functions/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt}) });
     const data = await res.json();
