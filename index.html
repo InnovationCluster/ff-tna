@@ -655,9 +655,16 @@ Write 3–4 sentences of warm, encouraging and practical feedback. This is a you
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function toggleCheck(id, idx) {
+  if (state.screen === 'intake') {
+    const n = document.getElementById('i-name'); if (n) state.intake.name = n.value;
+    const a = document.getElementById('i-age'); if (a) state.intake.age = a.value;
+    const l = document.getElementById('i-location'); if (l) state.intake.location = l.value;
+    const r = document.getElementById('i-regional'); if (r) state.intake.regional = r.value;
+    const t = document.getElementById('i-type'); if (t) state.intake.type = t.value;
+  }
   if (!state.checkboxAnswers[id]) state.checkboxAnswers[id]=[];
-  const a=state.checkboxAnswers[id]; const p=a.indexOf(idx);
-  if(p>-1)a.splice(p,1); else a.push(idx); render();
+  const arr=state.checkboxAnswers[id]; const p=arr.indexOf(idx);
+  if(p>-1)arr.splice(p,1); else arr.push(idx); render();
 }
 
 function copyResults() {
