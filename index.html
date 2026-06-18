@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Future Founders: Emerging Ag Industries — Program Assessment</title>
+<style>
+  :root {
+    --green: #8dc63f;
+    --green-mid: #7ab52e;
+    --green-bright: #a0d44e;
+    --green-light: #f2fadf;
+    --green-pale: #f8fcf0;
+    --teal: #6aab9c;
+    --yellow: #f9a825;
+    --yellow-light: #fff8e1;
+    --cream: #f8faf4;
+    --white: #ffffff;
+    --grey-light: #f2f4ee;
+    --grey-mid: #ccd5bb;
+    --grey-text: #5a6348;
+    --red: #c62828;
+    --orange: #e65100;
+    --text: #414042;
+    --radius: 12px;
+    --shadow: 0 2px 14px rgba(141,198,63,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+  header {
+    background: linear-gradient(135deg, #5a8a1a 0%, #7ab52e 50%, #8dc63f 100%);
+    color: white; padding: 28px 24px 24px; text-align: center;
+  }
+  header .program-tag { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 8px; }
+  header h1 { font-size: 23px; font-weight: 800; color: white; margin-bottom: 6px; line-height: 1.2; }
+  header .header-sub { font-size: 13px; color: rgba(255,255,255,0.75); margin-bottom: 10px; }
+  .header-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .pill { background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.9); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 28px 16px 60px; }
+
+  .progress-bar-wrap { background: var(--grey-light); border-radius: 20px; height: 7px; margin: 0 0 28px; overflow: hidden; }
+  .progress-bar-fill { height: 7px; background: linear-gradient(90deg, var(--green), var(--yellow)); border-radius: 20px; transition: width 0.4s ease; }
+  .progress-label { font-size: 12px; color: var(--grey-text); text-align: right; margin-bottom: 6px; }
+
+  .card { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 28px; margin-bottom: 20px; }
+  .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .card-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg, #7ab52e, #8dc63f); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .card-title { font-size: 17px; font-weight: 700; color: var(--green); }
+  .card-subtitle { font-size: 12px; color: var(--grey-text); margin-top: 2px; }
+
+  .section-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: white; background: var(--green); padding: 3px 10px; border-radius: 4px; margin-bottom: 14px; }
+
+  /* INTRO CARD */
+  .intro-text { font-size: 14px; color: var(--grey-text); line-height: 1.7; margin-bottom: 18px; }
+  .intro-highlight { background: var(--green-light); border-left: 4px solid var(--green-bright); border-radius: 6px; padding: 14px 16px; font-size: 13.5px; color: var(--text); line-height: 1.6; margin-bottom: 20px; }
+
+  /* FORM */
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 11px 14px; border: 1.5px solid var(--grey-mid);
+    border-radius: 8px; font-size: 14px; color: var(--text); background: var(--grey-light);
+    outline: none; transition: border-color 0.15s; font-family: inherit;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--green); background: white; }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* CHECKBOX GROUPS */
+  .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .check-item { display: flex; align-items: flex-start; gap: 9px; padding: 9px 12px; border: 1.5px solid var(--grey-mid); border-radius: 8px; cursor: pointer; background: var(--grey-light); transition: all 0.15s; }
+  .check-item:hover { border-color: var(--green-bright); background: white; }
+  .check-item.checked { border-color: var(--green); background: var(--green-light); }
+  .check-item input[type="checkbox"] { margin-top: 2px; accent-color: var(--green); flex-shrink: 0; width: 15px; height: 15px; }
+  .check-item span { font-size: 13px; color: var(--grey-text); line-height: 1.35; }
+  .check-item.checked span { color: var(--green); font-weight: 600; }
+
+  /* SCALE / LIKERT */
+  .question { margin-bottom: 24px; }
+  .question label { display: block; font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 11px; line-height: 1.4; }
+  .question .hint { font-size: 12px; color: var(--grey-text); font-weight: 400; margin-top: 3px; display: block; }
+  .options { display: flex; flex-direction: column; gap: 7px; }
+  .option { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1.5px solid var(--grey-mid); border-radius: 8px; cursor: pointer; transition: all 0.15s; font-size: 13.5px; color: var(--grey-text); background: var(--grey-light); user-select: none; }
+  .option:hover { border-color: var(--green-bright); color: var(--text); background: white; }
+  .option.selected { border-color: var(--green); background: var(--green-light); color: var(--green); font-weight: 600; }
+  .option .radio { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--grey-mid); flex-shrink: 0; transition: all 0.15s; }
+  .option.selected .radio { border-color: var(--green); background: var(--green); }
+
+  /* SCALE BUTTONS */
+  .scale-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .scale-btn { min-width: 44px; height: 44px; border-radius: 8px; border: 1.5px solid var(--grey-mid); background: var(--grey-light); font-size: 13px; font-weight: 700; cursor: pointer; color: var(--grey-text); transition: all 0.15s; display: flex; align-items: center; justify-content: center; padding: 0 6px; }
+  .scale-btn:hover { border-color: var(--green-bright); background: white; }
+  .scale-btn.selected { border-color: var(--green); background: var(--green-light); color: var(--green); }
+  .scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--grey-text); margin-top: 5px; }
+
+  /* NAV */
+  .nav-buttons { display: flex; gap: 12px; margin-top: 26px; }
+  .btn { padding: 13px 24px; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .btn-primary { background: var(--green); color: white; flex: 1; }
+  .btn-primary:hover { background: var(--green-mid); }
+  .btn-primary:disabled { background: var(--grey-mid); cursor: not-allowed; }
+  .btn-secondary { background: var(--grey-light); color: var(--grey-text); border: 1.5px solid var(--grey-mid); }
+  .btn-secondary:hover { background: white; color: var(--text); }
+  .btn-yellow { background: var(--yellow); color: #1b2e1b; flex: 1; font-weight: 700; }
+  .btn-yellow:hover { background: #f59f00; }
+  .btn-outline { background: white; color: var(--green); border: 2px solid var(--green); flex: 1; }
+  .btn-outline:hover { background: var(--green-light); }
+
+  /* RESULTS */
+  .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .result-card { padding: 14px 16px; border-radius: 10px; border-left: 4px solid var(--green-mid); background: var(--grey-light); }
+  .result-card.high { border-left-color: var(--green-bright); background: var(--green-light); }
+  .result-card.mid { border-left-color: var(--yellow); background: var(--yellow-light); }
+  .result-card.low { border-left-color: var(--orange); background: #fff3e0; }
+  .result-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--grey-text); margin-bottom: 4px; }
+  .result-score { font-size: 20px; font-weight: 800; color: var(--green); }
+  .result-tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-top: 6px; }
+  .tag-high { background: #c8f0d0; color: #1a5a2a; }
+  .tag-mid { background: #fff0b0; color: #6a4a00; }
+  .tag-low { background: #ffe0b2; color: #7a3000; }
+
+  /* RADAR */
+  .radar-wrap { text-align: center; margin: 0 auto 24px; max-width: 360px; }
+  canvas#radarChart { width: 100% !important; height: auto !important; }
+
+  /* AI FEEDBACK */
+  .ai-dim-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .ai-dim-title { font-size: 14px; font-weight: 700; color: var(--green); }
+  .btn-ai { font-size: 12px; padding: 6px 14px; background: var(--green); color: white; border: none; border-radius: 6px; cursor: pointer; }
+  .btn-ai:hover { background: var(--green-mid); }
+  .ai-feedback-box { background: var(--grey-light); border: 1.5px solid var(--grey-mid); border-radius: 8px; padding: 16px; font-size: 13.5px; line-height: 1.7; color: var(--text); min-height: 60px; margin-top: 8px; }
+  .ai-feedback-box.loading { color: var(--grey-text); font-style: italic; }
+  .ai-feedback-box.error { color: var(--red); }
+
+  /* SUBMIT */
+  .submit-box { background: linear-gradient(135deg, #5a8a1a, #7ab52e); border-radius: var(--radius); padding: 26px; color: white; text-align: center; margin-top: 24px; }
+  .submit-box h3 { font-size: 18px; margin-bottom: 8px; }
+  .submit-box p { font-size: 13px; color: rgba(255,255,255,0.75); margin-bottom: 18px; }
+  .submit-success { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 18px; text-align: center; color: white; margin-top: 16px; display: none; }
+  .submit-success .tick { font-size: 36px; margin-bottom: 8px; }
+
+  /* SENTIMENT */
+  .sentiment-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+  .sentiment-btn { flex: 1; min-width: 80px; padding: 12px 8px; border-radius: 8px; border: 1.5px solid var(--grey-mid); background: var(--grey-light); font-size: 22px; cursor: pointer; text-align: center; transition: all 0.15s; }
+  .sentiment-btn:hover { border-color: var(--green-bright); background: white; transform: scale(1.05); }
+  .sentiment-btn.selected { border-color: var(--green); background: var(--green-light); transform: scale(1.08); }
+  .sentiment-label { font-size: 10px; color: var(--grey-text); margin-top: 4px; }
+
+  .hidden-form { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  @media (max-width: 580px) {
+    .results-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .card { padding: 18px; }
+    header h1 { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="margin-bottom:16px;">
+    <img src="data:image/png;base64,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lOqdVMslfaWUfrO71aSOQu5gE7XZHgOo+i5tZcb5dP6ouFlGnWVApJjH2hqi3djvxt5INnRYD/uiJv8A5Wj/AO+H/wBCldI8cpb9qa32c6dZAKuZsXaCqLtue/G3mg2lERARFy1tyt1C9rKyupqZzhlollDSR80HUi/FPNDUQtmglZLE8Za9jsgjyIX7QEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQERc9xraW30j6qsnbDCzq534DxKTOu8omYiNy6FxXS6262NDq6rig3dA48z8uqjoNSesROnp7RcHUzGlxmexsbdo6kbiMhZxf6O4XOrnukc8FwY87j6vJudG3uBYcOAA8lzZuR013SNuPkcvorvHG5anbb9Z7jL2VHXxSSdzM4J+APVSS8+Mc+OQPY5zHtOQQcEFa3w+1C680DqeqdmspwA4/wAtvc74+Kz4/L9Sem3llxOf61ui8alaERF2vSEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERBA621JHpu3R1BpzUSzSdnHGHYycZySsztVx1NV63rbhbbYz2k+P34JeXZt90frEeX1Vi4lPM+u9PUD+cW5jyPEukwf2V/dRvOmeJVLengtoq5vZzO7gcYP090/IrlyTNree0S+X598mbPNptMUpasdvbced/2/b9V60tfv3fTQkiHV0IPIfEbgp6wa4sN1hc41Io5WNLnx1BDSAO8HoVP1dXT01DJWTytbBGwvc/PLb1yskZZKvXl1rbrSQQ2+jblsR2Y7Rw6Zx1Pie7zVrTakxETt1Z78nh3rXFf1Jn/wDMx3/nca/ysty4ixyVJpdP2youco/WDSG/EAAk/cuG5XLiFW22pbNYqaOlkicJA4AENI59XZ6Ls4X3NlLJNpmvpIqS4U5OCGgGUDrnxPn3hS3E68R2zTM8Id/GKtphiaDz59T8h+5R3tXqmzPd8/GtyMuaYjU7iNRqfj3lR9A6wqLFboKOqt75KCSoIbUAkbScZHTBx1wthBBAI6FZZqSzezOE1HFO3bUMmbM7lghzs8vkCB8lomnZXT2Cgmf9p9NG4/EtCth3H0y2/CJzYv8A58s71Wsx+2/Z3rC/Sq1BspbbpqF5BkJqqgA/qjLWD67j8gtze4MYXuOA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" alt="Future Founders / AgriFutures / AgriStart" style="max-height:80px;width:auto;max-width:100%;object-fit:contain;filter:brightness(0) invert(1);">
+  </div>
+  <h1>Emerging Ag Industries<br>Program Assessment</h1>
+  <div class="header-sub">Proudly supported by AgriFutures Australia</div>
+  <div class="header-pills">
+    <span class="pill">18–25 year olds</span>
+    <span class="pill">12-week program</span>
+    <span class="pill">Fully funded</span>
+    <span class="pill">WA-wide</span>
+  </div>
+</header>
+
+<form name="ff-tna" data-netlify="true" netlify-honeypot="bot-field" class="hidden-form">
+  <input type="hidden" name="form-name" value="ff-tna">
+  <input name="bot-field">
+  <input name="participant_name"><input name="age"><input name="location"><input name="regional">
+  <input name="current_status"><input name="assessment_type"><input name="submission_date">
+  <input name="score_industry_awareness"><input name="score_career_knowledge"><input name="score_skills_confidence">
+  <input name="score_innovation_thinking"><input name="score_program_sentiment"><input name="overall_score">
+  <input name="career_interest"><input name="what_you_hope"><input name="industry_aspects">
+  <input name="roles_interested"><input name="barriers"><input name="program_rating">
+  <input name="biggest_change"><input name="next_step"><input name="recommend">
+  <input name="employed_after"><input name="studying_after"><input name="further_training">
+</form>
+
+<div class="container">
+  <div id="app"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+let state = {
+  screen: 'intake',
+  section: 0,
+  intake: { name: '', age: '', location: '', regional: '', status: '', type: '' },
+  answers: {},
+  checkboxAnswers: {},
+  textAnswers: {},
+  scores: {}
+};
+
+// ── SECTIONS ─────────────────────────────────────────────────────────────────
+// Five scored dimensions aligned to AgriFutures reporting requirements
+const dimensions = [
+  {
+    id: 'industry_awareness',
+    label: 'Industry Awareness',
+    icon: '🌿',
+    desc: 'How aware are you of emerging agricultural industries?',
+    questions: [
+      {
+        id: 'ia1',
+        text: 'How aware are you of emerging agricultural industries in Australia? (e.g. new fibres, botanicals, bioproducts, novel proteins, agtech)',
+        options: ['I\'ve never really heard about them', 'I\'ve heard of them but don\'t know much', 'I have a general understanding of what they are', 'I know about specific industries or companies in this space', 'I follow developments in this space closely']
+      },
+      {
+        id: 'ia2',
+        text: 'How well do you understand what makes an agricultural industry "emerging"?',
+        options: ['I\'m not sure what this means', 'I have a rough idea', 'I understand the concept pretty well', 'I can explain it clearly to someone else']
+      },
+      {
+        id: 'ia3',
+        text: 'How familiar are you with the types of careers and jobs that exist in emerging agricultural industries?',
+        options: ['Not familiar at all', 'I have a vague idea', 'I know of a few career types', 'I have a good understanding of the range of roles available']
+      },
+      {
+        id: 'ia4',
+        text: 'How would you rate your understanding of how emerging ag industries connect to sustainability and the environment?',
+        options: ['I haven\'t thought about this connection', 'I have a basic sense that there\'s a link', 'I understand the connection reasonably well', 'I have a strong understanding of how they relate']
+      }
+    ]
+  },
+  {
+    id: 'career_knowledge',
+    label: 'Career Pathways',
+    icon: '🚀',
+    desc: 'Your knowledge of careers and opportunities in agriculture',
+    questions: [
+      {
+        id: 'ck1',
+        text: 'How clear are you on what kind of career or work you\'d like to pursue in the future?',
+        options: ['I have no idea yet', 'I have a rough direction but it\'s unclear', 'I have a general idea of the kind of work I want to do', 'I have a clear career direction in mind']
+      },
+      {
+        id: 'ck2',
+        text: 'How much do you know about what it takes to work or start a business in an agricultural industry?',
+        options: ['I know very little', 'I know a few basics', 'I have a reasonable understanding', 'I have strong knowledge of the requirements and pathways']
+      },
+      {
+        id: 'ck3',
+        text: 'How connected do you feel to people working in agriculture, agtech or related industries?',
+        options: ['I don\'t know anyone in these industries', 'I know one or two people but loosely', 'I have some contacts or connections', 'I have good connections to people working in this space']
+      },
+      {
+        id: 'ck4',
+        text: 'How seriously are you considering a career or entrepreneurship pathway in an agricultural industry?',
+        options: ['It\'s not something I\'ve really considered', 'I\'m curious but it feels uncertain', 'I\'m genuinely interested and exploring it', 'I\'m actively pursuing a pathway in this space']
+      }
+    ]
+  },
+  {
+    id: 'skills_confidence',
+    label: 'Skills & Confidence',
+    icon: '⚡',
+    desc: 'Your skills, confidence and readiness to participate',
+    questions: [
+      {
+        id: 'sc1',
+        text: 'How confident do you feel presenting your ideas to a group?',
+        options: ['Very unconfident — this feels scary', 'A little nervous but I can get through it', 'Reasonably confident', 'Confident and comfortable speaking to groups']
+      },
+      {
+        id: 'sc2',
+        text: 'How strong are your problem-solving skills?',
+        options: ['I find it hard to work through problems on my own', 'I can solve straightforward problems', 'I\'m a good problem-solver', 'I love tackling complex problems and finding creative solutions']
+      },
+      {
+        id: 'sc3',
+        text: 'How comfortable are you using digital tools and technology for work or learning?',
+        options: ['Not very comfortable', 'I can use basics like email and social media', 'I\'m comfortable with a range of digital tools', 'I\'m highly tech-literate and pick up new tools quickly']
+      },
+      {
+        id: 'sc4',
+        text: 'How would you describe your ability to work in a team?',
+        options: ['I find teamwork challenging', 'I can work in teams when needed', 'I\'m a good team player', 'Collaboration is one of my strengths']
+      },
+      {
+        id: 'sc5',
+        text: 'How confident do you feel about your future career or business prospects right now?',
+        options: ['I feel pretty uncertain and anxious about my future', 'I have some concerns but I\'m trying to stay positive', 'I feel reasonably confident about what\'s ahead', 'I feel really confident and excited about my future']
+      }
+    ]
+  },
+  {
+    id: 'innovation_thinking',
+    label: 'Innovation & Thinking',
+    icon: '💡',
+    desc: 'Your curiosity, creativity and entrepreneurial mindset',
+    questions: [
+      {
+        id: 'it1',
+        text: 'How curious are you about new ideas, industries and ways of doing things?',
+        options: ['I prefer familiar things and routines', 'I\'m occasionally curious about new ideas', 'I enjoy exploring new ideas regularly', 'I\'m always seeking out new knowledge and perspectives']
+      },
+      {
+        id: 'it2',
+        text: 'Have you ever come up with an idea for a product, service or solution to a problem?',
+        options: ['Not really — I\'ve never thought this way', 'I\'ve had a few vague ideas but never pursued them', 'Yes, I\'ve had ideas and thought about how they could work', 'Yes, I\'ve developed ideas and tried to bring them to life']
+      },
+      {
+        id: 'it3',
+        text: 'How open are you to learning about entrepreneurship and starting your own venture?',
+        options: ['It\'s not really on my radar', 'I\'m slightly curious but it feels far off', 'I\'m interested and open to learning more', 'I\'m actively interested in entrepreneurship as a pathway']
+      },
+      {
+        id: 'it4',
+        text: 'How comfortable are you with uncertainty and trying new things even if you might fail?',
+        options: ['I find uncertainty really difficult', 'I manage but it\'s uncomfortable', 'I\'m fairly comfortable with trying new things', 'I embrace uncertainty and see failure as part of learning']
+      }
+    ]
+  },
+  {
+    id: 'program_sentiment',
+    label: 'Program Enthusiasm',
+    icon: '🌟',
+    desc: 'Your excitement and expectations for the program',
+    questions: [
+      {
+        id: 'ps1',
+        text: 'How excited are you about participating in Future Founders: Emerging Ag Industries?',
+        options: ['Not very excited — I\'m not sure what to expect', 'A little excited — curious to see what it\'s like', 'Pretty excited — I think this will be valuable', 'Very excited — I can\'t wait to get started']
+      },
+      {
+        id: 'ps2',
+        text: 'How motivated are you to get the most out of this program?',
+        options: ['I\'ll see how it goes', 'I\'m reasonably motivated', 'I\'m motivated and plan to engage fully', 'I\'m highly motivated and committed to making the most of every opportunity']
+      },
+      {
+        id: 'ps3',
+        text: 'How do you feel about meeting and working with other young people and industry mentors in this program?',
+        options: ['A bit nervous about it', 'Okay — I\'ll manage', 'Looking forward to it', 'Really excited — this is one of the things I\'m most looking forward to']
+      },
+      {
+        id: 'ps4',
+        text: 'How likely do you think you are to take action towards a career or opportunity in agriculture after the program?',
+        options: ['Unlikely — I\'m not sure it\'s for me', 'Possibly — I\'m open to seeing where it leads', 'Likely — I expect to take at least one step forward', 'Very likely — I\'m planning to actively pursue opportunities']
+      }
+    ]
+  }
+];
+
+// ── POST-PROGRAM EXTRA QUESTIONS ──────────────────────────────────────────────
+const postQuestions = [
+  {
+    id: 'program_rating',
+    type: 'scale',
+    min: 1, max: 10,
+    label: 'Overall, how would you rate the Future Founders program? (1 = not valuable, 10 = excellent)',
+    lowLabel: 'Not valuable', highLabel: 'Excellent'
+  },
+  {
+    id: 'biggest_change',
+    type: 'textarea',
+    label: 'What is the biggest change in your thinking, knowledge or confidence since starting the program?',
+    placeholder: 'Tell us what\'s shifted for you...'
+  },
+  {
+    id: 'next_step',
+    type: 'options',
+    label: 'As a result of this program, what is your most likely next step?',
+    options: [
+      'Looking for a job or work experience in agriculture or an emerging industry',
+      'Starting or exploring my own business or entrepreneurship pathway',
+      'Enrolling in further study or training related to agriculture',
+      'Continuing to learn and explore — not sure yet',
+      'The program hasn\'t changed my direction'
+    ]
+  },
+  {
+    id: 'employed_after',
+    type: 'options',
+    label: 'Have you secured or been offered any role, work experience or paid opportunity in an agricultural industry as a result of the program?',
+    options: ['Yes — I have secured a paid role', 'Yes — I have work experience or an internship lined up', 'Not yet, but I\'m actively pursuing opportunities', 'No — and I\'m not currently pursuing this direction']
+  },
+  {
+    id: 'further_training',
+    type: 'options',
+    label: 'Are you planning to undertake further study or training in agriculture or a related field?',
+    options: ['Yes — I have already enrolled', 'Yes — I am planning to enrol', 'I\'m considering it', 'No — further study isn\'t on my radar right now']
+  },
+  {
+    id: 'recommend',
+    type: 'options',
+    label: 'Would you recommend Future Founders to another young person?',
+    options: [
+      'Absolutely — I\'ve already told people about it',
+      'Yes — it\'s been a great experience',
+      'Probably — with some minor suggestions',
+      'Maybe — it depends on what they\'re looking for',
+      'Probably not — it wasn\'t the right fit for me'
+    ]
+  }
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  const app = document.getElementById('app');
+  if (state.screen === 'intake') app.innerHTML = renderIntake();
+  else if (state.screen === 'assessment') app.innerHTML = renderAssessment();
+  else if (state.screen === 'post') app.innerHTML = renderPost();
+  else if (state.screen === 'results') { app.innerHTML = renderResults(); drawRadar(); }
+  attachHandlers();
+}
+
+// ── INTAKE ────────────────────────────────────────────────────────────────────
+function renderIntake() {
+  return `
+    <div class="card">
+      <div class="section-tag">Welcome</div>
+      <div class="card-header">
+        <div class="card-icon">🌾</div>
+        <div><div class="card-title">Future Founders Assessment</div><div class="card-subtitle">Takes about 8–10 minutes — there are no right or wrong answers</div></div>
+      </div>
+      <p class="intro-text">This short assessment helps the Future Founders team understand where you're at so we can make the program as useful as possible for you. We'll ask you to do it at the start and end of the program so we can see how much you've grown.</p>
+      <div class="intro-highlight">✅ Your answers are confidential and used only by the Future Founders team. Be honest — this isn't a test!</div>
+      <div class="form-row">
+        <div class="form-group"><label>Your full name *</label><input type="text" id="i-name" placeholder="First and last name" value="${state.intake.name}"></div>
+        <div class="form-group"><label>Your age *</label>
+          <select id="i-age">
+            <option value="" ${!state.intake.age?'selected':''}>Select your age...</option>
+            ${[18,19,20,21,22,23,24,25].map(a=>`<option value="${a}" ${state.intake.age==a?'selected':''}>${a}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Where are you based? *</label><input type="text" id="i-location" placeholder="Town / suburb, region" value="${state.intake.location}"></div>
+        <div class="form-group"><label>Do you live in a regional or remote area? *</label>
+          <select id="i-regional">
+            <option value="" ${!state.intake.regional?'selected':''}>Select...</option>
+            <option value="Yes" ${state.intake.regional==='Yes'?'selected':''}>Yes</option>
+            <option value="No" ${state.intake.regional==='No'?'selected':''}>No</option>
+            <option value="Unsure" ${state.intake.regional==='Unsure'?'selected':''}>Unsure</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>What are you currently doing? (Select all that apply) *</label>
+        <div class="checkbox-grid" style="margin-top:4px;">
+          ${['Employed full-time','Employed part-time / casual','Studying (TAFE/VET)','Studying (University)','Unemployed / seeking work','Running my own business or farm','Volunteer / community work','Other'].map((opt,i)=>`
+            <label class="check-item ${(state.checkboxAnswers['status']||[]).includes(i)?'checked':''}">
+              <input type="checkbox" ${(state.checkboxAnswers['status']||[]).includes(i)?'checked':''} onchange="toggleCheck('status',${i})">
+              <span>${opt}</span>
+            </label>`).join('')}
+        </div>
+      </div>
+      <div class="form-group"><label>Assessment point *</label>
+        <select id="i-type">
+          <option value="" ${!state.intake.type?'selected':''}>Select...</option>
+          <option value="Start of program" ${state.intake.type==='Start of program'?'selected':''}>Start of program</option>
+          <option value="End of program" ${state.intake.type==='End of program'?'selected':''}>End of program</option>
+        </select>
+      </div>
+      <div class="nav-buttons"><button class="btn btn-primary" onclick="startAssessment()">Let's get started →</button></div>
+    </div>`;
+}
+
+const statusOptions = ['Employed full-time','Employed part-time / casual','Studying (TAFE/VET)','Studying (University)','Unemployed / seeking work','Running my own business or farm','Volunteer / community work','Other'];
+
+function startAssessment() {
+  const name = document.getElementById('i-name').value.trim();
+  const age = document.getElementById('i-age').value;
+  const location = document.getElementById('i-location').value.trim();
+  const regional = document.getElementById('i-regional').value;
+  const type = document.getElementById('i-type').value;
+  const statusSelected = state.checkboxAnswers['status'] || [];
+  if (!name || !age || !location || !regional || !type || statusSelected.length === 0) {
+    alert('Please complete all fields before continuing.'); return;
+  }
+  state.intake = { name, age, location, regional, type, status: statusSelected.map(i=>statusOptions[i]).join(', ') };
+  state.screen = 'assessment'; state.section = 0;
+  window.scrollTo({ top: 0 }); render();
+}
+
+// ── ASSESSMENT ────────────────────────────────────────────────────────────────
+function renderAssessment() {
+  const dim = dimensions[state.section];
+  const pct = Math.round(((state.section) / dimensions.length) * 100);
+  const answered = dim.questions.filter(q => state.answers[q.id] !== undefined).length;
+  const isLast = state.section === dimensions.length - 1;
+  const isPre = state.intake.type === 'Start of program';
+  return `
+    <div class="progress-label">Section ${state.section + 1} of ${dimensions.length}</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+    <div class="card">
+      <div class="section-tag">Part ${state.section + 1}</div>
+      <div class="card-header">
+        <div class="card-icon">${dim.icon}</div>
+        <div><div class="card-title">${dim.label}</div><div class="card-subtitle">${dim.desc}</div></div>
+      </div>
+      ${dim.questions.map(q => renderQuestion(q)).join('')}
+      <div class="nav-buttons">
+        ${state.section > 0 ? `<button class="btn btn-secondary" onclick="prevSection()">← Back</button>` : ''}
+        <button class="btn btn-primary" onclick="nextSection()" ${answered < dim.questions.length ? 'disabled' : ''}>
+          ${isLast ? (isPre ? 'See my results →' : 'Almost done →') : 'Next →'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function renderQuestion(q) {
+  return `<div class="question"><label>${q.text}</label><div class="options">${q.options.map((opt,i)=>`<div class="option ${state.answers[q.id]===i?'selected':''}" onclick="selectAnswer('${q.id}',${i})"><div class="radio"></div>${opt}</div>`).join('')}</div></div>`;
+}
+
+function selectAnswer(qid, idx) { state.answers[qid] = idx; render(); }
+function prevSection() { state.section--; window.scrollTo({ top: 0 }); render(); }
+
+function nextSection() {
+  const dim = dimensions[state.section];
+  const answered = dim.questions.filter(q => state.answers[q.id] !== undefined).length;
+  if (answered < dim.questions.length) { alert('Please answer all questions before continuing.'); return; }
+  if (state.section < dimensions.length - 1) { state.section++; window.scrollTo({ top: 0 }); render(); }
+  else {
+    calculateScores();
+    if (state.intake.type === 'End of program') { state.screen = 'post'; }
+    else { state.screen = 'results'; }
+    window.scrollTo({ top: 0 }); render();
+  }
+}
+
+function calculateScores() {
+  state.scores = {};
+  dimensions.forEach(dim => {
+    const total = dim.questions.reduce((sum, q) => sum + (state.answers[q.id] || 0), 0);
+    const max = dim.questions.length * (Math.max(...dim.questions.map(q => q.options.length)) - 1);
+    state.scores[dim.id] = Math.round((total / max) * 100);
+  });
+}
+
+// ── POST-PROGRAM EXTRA QUESTIONS ──────────────────────────────────────────────
+function renderPost() {
+  return `
+    <div class="progress-label">Almost done!</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:90%"></div></div>
+    <div class="card">
+      <div class="section-tag">End of program</div>
+      <div class="card-header">
+        <div class="card-icon">🎉</div>
+        <div><div class="card-title">A few final questions</div><div class="card-subtitle">Help us understand what's changed for you</div></div>
+      </div>
+      <p class="intro-text" style="margin-bottom:20px;">You've completed the assessment questions — nice work! Now we'd love to know a bit more about what the program has meant for you.</p>
+      ${postQuestions.map(q => renderPostQuestion(q)).join('')}
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="backToAssessment()">← Back</button>
+        <button class="btn btn-primary" onclick="showResults()">View my results →</button>
+      </div>
+    </div>`;
+}
+
+function renderPostQuestion(q) {
+  const val = state.textAnswers[q.id];
+  if (q.type === 'textarea') return `<div class="question"><label>${q.label}</label><textarea id="pq-${q.id}" placeholder="${q.placeholder||''}" oninput="saveText('${q.id}')">${val||''}</textarea></div>`;
+  if (q.type === 'options') return `<div class="question"><label>${q.label}</label><div class="options">${q.options.map((opt,i)=>`<div class="option ${state.answers[q.id]===i?'selected':''}" onclick="selectAnswer('${q.id}',${i})"><div class="radio"></div>${opt}</div>`).join('')}</div></div>`;
+  if (q.type === 'scale') {
+    const nums = Array.from({length: q.max - q.min + 1}, (_,i) => i + q.min);
+    return `<div class="question"><label>${q.label}</label><div class="scale-row">${nums.map(n=>`<button class="scale-btn ${state.answers[q.id]===n?'selected':''}" onclick="selectAnswer('${q.id}',${n})">${n}</button>`).join('')}</div><div class="scale-labels"><span>${q.lowLabel}</span><span>${q.highLabel}</span></div></div>`;
+  }
+  return '';
+}
+
+function saveText(id) { state.textAnswers[id] = document.getElementById('pq-'+id)?.value || ''; }
+function backToAssessment() { state.section = dimensions.length - 1; state.screen = 'assessment'; window.scrollTo({ top: 0 }); render(); }
+function showResults() { state.screen = 'results'; window.scrollTo({ top: 0 }); render(); }
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
+function renderResults() {
+  const overall = Math.round(Object.values(state.scores).reduce((a,b)=>a+b,0)/dimensions.length);
+  const sorted = [...dimensions].sort((a,b)=>state.scores[b.id]-state.scores[a.id]);
+  function getTag(s) { return s>=67?'<span class="result-tag tag-high">Strength</span>':s>=40?'<span class="result-tag tag-mid">Growing</span>':'<span class="result-tag tag-low">Opportunity</span>'; }
+  function getClass(s) { return s>=67?'high':s>=40?'mid':'low'; }
+  const isPre = state.intake.type === 'Start of program';
+  return `
+    <div class="card">
+      <div class="section-tag">Your results</div>
+      <div class="card-header">
+        <div class="card-icon">🌟</div>
+        <div><div class="card-title">${state.intake.name} — ${state.intake.type}</div><div class="card-subtitle">Age ${state.intake.age} · ${state.intake.location} · Overall: ${overall}%</div></div>
+      </div>
+      ${isPre ? `<div class="intro-highlight" style="margin-bottom:16px;">This is your <strong>starting point</strong> — there are no right or wrong scores here. We'll ask you to complete this again at the end of the program so you can see how far you've come! 🚀</div>` : `<div class="intro-highlight" style="margin-bottom:16px;">Look how far you've come! 🎉 Compare these results with your start-of-program scores to see your growth.</div>`}
+      <div class="radar-wrap"><canvas id="radarChart" width="360" height="360"></canvas></div>
+      <div class="results-grid">${sorted.map(dim=>`<div class="result-card ${getClass(state.scores[dim.id])}"><div class="result-label">${dim.icon} ${dim.label}</div><div class="result-score">${state.scores[dim.id]}%</div>${getTag(state.scores[dim.id])}</div>`).join('')}</div>
+    </div>
+    ${dimensions.map(dim=>`
+    <div class="card">
+      <div class="ai-dim-header">
+        <div class="ai-dim-title">${dim.icon} ${dim.label} — ${state.scores[dim.id]}%</div>
+        <button class="btn-ai" onclick="getFeedback('${dim.id}')">Get personalised feedback</button>
+      </div>
+      <div id="feedback-${dim.id}" class="ai-feedback-box" style="display:none;"></div>
+    </div>`).join('')}
+    <div class="card submit-box">
+      <h3>${isPre ? 'You\'re all set! 🌱' : 'Amazing work completing the program! 🎉'}</h3>
+      <p>${isPre ? 'Submit your results so the Future Founders team can support you throughout the program.' : 'Submit your end-of-program results so we can track your growth and celebrate your progress.'}</p>
+      <div class="nav-buttons" style="justify-content:center;">
+        <button class="btn btn-yellow" onclick="submitResults()">Submit my results →</button>
+        <button class="btn btn-outline" onclick="copyResults()" style="border-color:rgba(255,255,255,0.5);color:white;background:transparent;">Copy results</button>
+      </div>
+      <div id="submit-success" class="submit-success">
+        <div class="tick">🌟</div>
+        <strong>Results submitted — thank you!</strong><br>
+        <span style="font-size:13px;opacity:0.85;">The Future Founders team will be in touch. You're doing great!</span>
+      </div>
+      <div style="margin-top:14px;"><button class="btn btn-secondary" onclick="restart()" style="width:100%;margin-top:8px;background:rgba(255,255,255,0.1);color:white;border-color:rgba(255,255,255,0.2);">Start again</button></div>
+    </div>`;
+}
+
+function drawRadar() {
+  setTimeout(() => {
+    const canvas = document.getElementById('radarChart');
+    if (!canvas) return;
+    new Chart(canvas.getContext('2d'), {
+      type: 'radar',
+      data: { labels: dimensions.map(d=>d.label), datasets: [{ label: state.intake.name, data: dimensions.map(d=>state.scores[d.id]), backgroundColor: 'rgba(141,198,63,0.15)', borderColor: '#7ab52e', borderWidth: 2.5, pointBackgroundColor: '#f9a825', pointRadius: 5 }] },
+      options: { responsive: true, scales: { r: { min:0, max:100, ticks:{stepSize:25,font:{size:10},color:'#546e54'}, grid:{color:'rgba(0,0,0,0.07)'}, pointLabels:{font:{size:11,weight:'600'},color:'#5a8a1a'} } }, plugins:{legend:{display:false}} }
+    });
+  }, 50);
+}
+
+// ── AI FEEDBACK ───────────────────────────────────────────────────────────────
+async function getFeedback(dimId) {
+  const dim = dimensions.find(d=>d.id===dimId);
+  const score = state.scores[dimId];
+  const box = document.getElementById('feedback-'+dimId);
+  box.style.display='block'; box.className='ai-feedback-box loading'; box.textContent='Getting your personalised feedback...';
+  const answers = dim.questions.map(q=>`Q: ${q.text}\nA: ${q.options[state.answers[q.id]||0]}`).join('\n\n');
+  const prompt = `You are a supportive program facilitator for Future Founders: Emerging Ag Industries — a 12-week program for young people aged 18–25 in Western Australia who are curious about careers and entrepreneurship in emerging agricultural industries.
+
+Participant: ${state.intake.name}, age ${state.intake.age}, based in ${state.intake.location}
+Assessment point: ${state.intake.type}
+Dimension: ${dim.label}
+Score: ${score}%
+
+Their answers:
+${answers}
+
+Write 3–4 sentences of warm, encouraging and practical feedback. This is a young person at the start of their journey — your tone should feel like a supportive mentor, not a formal assessor. Acknowledge where they're at, point to one area to focus on, and give one specific, actionable suggestion they can act on now. Keep language simple, friendly and energising. Never make them feel bad about low scores — frame everything as opportunity and growth.`;
+  try {
+    const res = await fetch('/.netlify/functions/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({prompt}) });
+    const data = await res.json();
+    if (data.content && data.content[0]) { box.className='ai-feedback-box'; box.textContent=data.content[0].text; }
+    else throw new Error('No response');
+  } catch(e) { box.className='ai-feedback-box error'; box.textContent='Could not load feedback right now. Please try again.'; }
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function toggleCheck(id, idx) {
+  if (!state.checkboxAnswers[id]) state.checkboxAnswers[id]=[];
+  const a=state.checkboxAnswers[id]; const p=a.indexOf(idx);
+  if(p>-1)a.splice(p,1); else a.push(idx); render();
+}
+
+function copyResults() {
+  const lines=[`Future Founders Assessment — ${state.intake.name} (${state.intake.type})`,`Age: ${state.intake.age} | Location: ${state.intake.location} | Regional: ${state.intake.regional}`,`Date: ${new Date().toLocaleDateString('en-AU')}`,'', ...dimensions.map(d=>`${d.label}: ${state.scores[d.id]}%`),'',`Overall: ${Math.round(Object.values(state.scores).reduce((a,b)=>a+b,0)/dimensions.length)}%`];
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Results copied!'));
+}
+
+function submitResults() {
+  const isPre = state.intake.type === 'Start of program';
+  const postFormatted = {};
+  if (!isPre) {
+    postQuestions.forEach(q => {
+      if (q.type === 'textarea') postFormatted[q.id] = state.textAnswers[q.id] || '';
+      else if (q.type === 'options') postFormatted[q.id] = state.answers[q.id] !== undefined ? q.options[state.answers[q.id]] : '';
+      else if (q.type === 'scale') postFormatted[q.id] = state.answers[q.id] !== undefined ? `${state.answers[q.id]}/10` : '';
+    });
+  }
+  const body = new URLSearchParams({
+    'form-name': 'ff-tna',
+    participant_name: state.intake.name,
+    age: state.intake.age,
+    location: state.intake.location,
+    regional: state.intake.regional,
+    current_status: state.intake.status || '',
+    assessment_type: state.intake.type,
+    submission_date: new Date().toLocaleString('en-AU', { timeZone: 'Australia/Perth' }),
+    score_industry_awareness: state.scores.industry_awareness + '%',
+    score_career_knowledge: state.scores.career_knowledge + '%',
+    score_skills_confidence: state.scores.skills_confidence + '%',
+    score_innovation_thinking: state.scores.innovation_thinking + '%',
+    score_program_sentiment: state.scores.program_sentiment + '%',
+    overall_score: Math.round(Object.values(state.scores).reduce((a,b)=>a+b,0)/dimensions.length) + '%',
+    ...postFormatted
+  });
+  fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body })
+    .then(()=>{ document.getElementById('submit-success').style.display='block'; })
+    .catch(()=>alert('There was a problem submitting. Please try again.'));
+}
+
+function restart() { state={screen:'intake',section:0,intake:{name:'',age:'',location:'',regional:'',status:'',type:''},answers:{},checkboxAnswers:{},textAnswers:{},scores:{}}; window.scrollTo({top:0}); render(); }
+function attachHandlers() {}
+render();
+</script>
+</body>
+</html>
