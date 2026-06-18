@@ -199,6 +199,7 @@ let state = {
   answers: {},
   checkboxAnswers: {},
   textAnswers: {},
+  mentorData: {},
   scores: {}
 };
 
@@ -405,11 +406,32 @@ const postQuestions = [
   }
 ];
 
+// ── MENTOR QUESTIONS ─────────────────────────────────────────────────────────
+const mentorQuestions = {
+  pre: [
+    { id: 'mentor_support', type: 'checkbox', label: 'What kind of support are you hoping to get from your industry mentor? (Select all that apply)', options: ['Learning about career pathways in agriculture', 'Getting advice on starting a business or entrepreneurial venture', 'Building my confidence and communication skills', 'Understanding what it's really like to work in an emerging ag industry', 'Getting introductions or connections to people in the industry', 'Help with my innovation challenge idea', 'Just having someone experienced to talk to and ask questions'] },
+    { id: 'mentor_nervous', type: 'options', label: 'How do you feel about meeting and working with an industry professional as your mentor?', options: ['Pretty nervous — I've never done anything like this before', 'A little nervous but curious', 'Comfortable — I'm looking forward to it', 'Really excited — this is one of the things I'm most looking forward to'] },
+    { id: 'mentor_learn_style', type: 'options', label: 'How do you learn best?', options: ['Watching and observing — I like to see things in action first', 'Asking lots of questions and having a conversation', 'Trying things myself and learning by doing', 'A mix of all of the above'] },
+    { id: 'mentor_communicate', type: 'options', label: 'How do you prefer to communicate?', options: ['In person is best for me', 'Video call works well', 'I'm comfortable with any format', 'I'm not sure yet — I'd like to try different things'] },
+    { id: 'mentor_goals', type: 'textarea', label: 'Is there anything specific you'd love your mentor to help you with or talk to you about?', placeholder: 'E.g. what a typical day looks like in their industry, how they got started, advice for someone like me...' },
+    { id: 'mentor_other', type: 'textarea', label: 'Is there anything else that would help us support you through the mentoring experience? (optional)', placeholder: 'E.g. any concerns, accessibility needs, or things that would make you feel more comfortable...', optional: true }
+  ],
+  post: [
+    { id: 'mentoring_rating', type: 'scale', min: 1, max: 5, label: 'Overall, how would you rate your mentoring experience? (1 = not helpful, 5 = excellent)', lowLabel: 'Not helpful', highLabel: 'Excellent' },
+    { id: 'mentoring_sessions', type: 'options', label: 'How many times did you connect with your mentor during the program?', options: ['Just once', 'Two or three times', 'Four or more times', 'We stayed in touch regularly throughout the program'] },
+    { id: 'mentoring_confidence', type: 'options', label: 'Did your mentor help you feel more confident about pursuing opportunities in agriculture?', options: ['Not really — the mentoring didn't change how I felt', 'A little — it gave me some things to think about', 'Yes — I feel noticeably more confident after talking with them', 'Definitely — they had a big impact on my thinking and confidence'] },
+    { id: 'mentoring_highlight', type: 'textarea', label: 'What was the most useful or memorable thing your mentor shared with you?', placeholder: 'Tell us about the moment or conversation that stood out most...' },
+    { id: 'mentoring_improve', type: 'textarea', label: 'What could have made the mentoring experience even better for you?', placeholder: 'E.g. more time together, different topics, meeting on-site...' },
+    { id: 'mentoring_recommend', type: 'options', label: 'Would you recommend the mentoring experience to future Future Founders participants?', options: ['Definitely — it was one of the best parts of the program', 'Yes — it was really worthwhile', 'Probably — with a few small changes', 'Maybe — it was okay but could be improved', 'Probably not — it wasn't very useful for me'] }
+  ]
+};
+
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function render() {
   const app = document.getElementById('app');
   if (state.screen === 'intake') app.innerHTML = renderIntake();
   else if (state.screen === 'assessment') app.innerHTML = renderAssessment();
+  else if (state.screen === 'mentor') app.innerHTML = renderMentor();
   else if (state.screen === 'post') app.innerHTML = renderPost();
   else if (state.screen === 'results') { app.innerHTML = renderResults(); drawRadar(); }
   attachHandlers();
@@ -523,8 +545,7 @@ function nextSection() {
   if (state.section < dimensions.length - 1) { state.section++; window.scrollTo({ top: 0 }); render(); }
   else {
     calculateScores();
-    if (state.intake.type === 'End of program') { state.screen = 'post'; }
-    else { state.screen = 'results'; }
+    state.screen = 'mentor';
     window.scrollTo({ top: 0 }); render();
   }
 }
@@ -536,6 +557,56 @@ function calculateScores() {
     const max = dim.questions.length * (Math.max(...dim.questions.map(q => q.options.length)) - 1);
     state.scores[dim.id] = Math.round((total / max) * 100);
   });
+}
+
+// ── MENTOR SCREEN ────────────────────────────────────────────────────────────
+function renderMentor() {
+  const isPre = state.intake.type === 'Start of program';
+  const qs = isPre ? mentorQuestions.pre : mentorQuestions.post;
+  const intro = isPre
+    ? 'During the program you'll be matched with an industry mentor — someone working in an emerging agricultural industry who can share their experience and support you. These questions help us make the best possible match and set you up for a great mentoring experience.'
+    : 'We'd love to hear how the mentoring went for you. Your feedback helps us improve the experience for future Future Founders participants.';
+  return \`
+    <div class="progress-label">Almost there!</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:88%"></div></div>
+    <div class="card">
+      <div class="section-tag">\${isPre ? 'Mentor matching' : 'Mentoring feedback'}</div>
+      <div class="card-header">
+        <div class="card-icon">\${isPre ? '🤝' : '💬'}</div>
+        <div><div class="card-title">\${isPre ? 'Your Industry Mentor' : 'How did the mentoring go?'}</div>
+        <div class="card-subtitle">\${isPre ? 'Help us match you with the right person' : 'Share your experience'}</div></div>
+      </div>
+      <p class="intro-text" style="margin-bottom:20px;">\${intro}</p>
+      \${qs.map(q => renderMentorQ(q)).join('')}
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="backFromMentor()">← Back</button>
+        <button class="btn btn-primary" onclick="nextFromMentor()">\${isPre ? 'See my results →' : 'Almost done →'}</button>
+      </div>
+    </div>\`;
+}
+
+function renderMentorQ(q) {
+  const val = state.mentorData[q.id];
+  if (q.type === 'checkbox') {
+    const checked = val || [];
+    return \`<div class="question"><label>\${q.label}</label><div class="options">\${q.options.map((opt,i)=>\`<label class="check-item \${checked.includes(i)?'checked':''}" style="display:flex;margin-bottom:0"><input type="checkbox" \${checked.includes(i)?'checked':''} onchange="toggleMentorCheck('\${q.id}',\${i})"><span>\${opt}</span></label>\`).join('')}</div></div>\`;
+  }
+  if (q.type === 'options') return \`<div class="question"><label>\${q.label}</label><div class="options">\${q.options.map((opt,i)=>\`<div class="option \${val===i?'selected':''}" onclick="setMentorOption('\${q.id}',\${i})"><div class="radio"></div>\${opt}</div>\`).join('')}</div></div>\`;
+  if (q.type === 'textarea') return \`<div class="question"><label>\${q.label}</label><textarea id="mq-\${q.id}" placeholder="\${q.placeholder||''}" oninput="saveMentorText('\${q.id}')">\${val||''}</textarea></div>\`;
+  if (q.type === 'scale') { const nums=Array.from({length:q.max-q.min+1},(_,i)=>i+q.min); return \`<div class="question"><label>\${q.label}</label><div class="scale-row">\${nums.map(n=>\`<button class="scale-btn \${val===n?'selected':''}" onclick="setMentorScale('\${q.id}',\${n})">\${n}</button>\`).join('')}</div><div class="scale-labels"><span>\${q.lowLabel}</span><span>\${q.highLabel}</span></div></div>\`; }
+  return '';
+}
+
+function toggleMentorCheck(id, idx) { if(!state.mentorData[id])state.mentorData[id]=[]; const a=state.mentorData[id]; const p=a.indexOf(idx); if(p>-1)a.splice(p,1); else a.push(idx); render(); }
+function setMentorOption(id, idx) { state.mentorData[id]=idx; render(); }
+function saveMentorText(id) { state.mentorData[id]=document.getElementById('mq-'+id)?.value||''; }
+function setMentorScale(id, n) { state.mentorData[id]=n; render(); }
+function backFromMentor() { state.section=dimensions.length-1; state.screen='assessment'; window.scrollTo({top:0}); render(); }
+function nextFromMentor() {
+  const isPre = state.intake.type === 'Start of program';
+  if (isPre) { state.screen='results'; }
+  else { state.screen='post'; }
+  window.scrollTo({top:0}); render();
 }
 
 // ── POST-PROGRAM EXTRA QUESTIONS ──────────────────────────────────────────────
@@ -682,6 +753,19 @@ function submitResults() {
       else if (q.type === 'scale') postFormatted[q.id] = state.answers[q.id] !== undefined ? `${state.answers[q.id]}/10` : '';
     });
   }
+  // Format mentor data
+  const mentorFormatted = {};
+  const isPre2 = state.intake.type === 'Start of program';
+  const mqs = isPre2 ? mentorQuestions.pre : mentorQuestions.post;
+  mqs.forEach(q => {
+    const val = state.mentorData[q.id];
+    if (q.type === 'checkbox' && Array.isArray(val)) mentorFormatted[q.id] = val.map(i=>q.options[i]).join(', ');
+    else if (q.type === 'options' && val !== undefined) mentorFormatted[q.id] = q.options[val];
+    else if (q.type === 'scale' && val !== undefined) mentorFormatted[q.id] = val + '/' + q.max;
+    else if (q.type === 'textarea') mentorFormatted[q.id] = state.mentorData[q.id] || '';
+    else mentorFormatted[q.id] = '';
+  });
+
   const body = new URLSearchParams({
     'form-name': 'ff-tna',
     participant_name: state.intake.name,
@@ -697,14 +781,15 @@ function submitResults() {
     score_innovation_thinking: state.scores.innovation_thinking + '%',
     score_program_sentiment: state.scores.program_sentiment + '%',
     overall_score: Math.round(Object.values(state.scores).reduce((a,b)=>a+b,0)/dimensions.length) + '%',
-    ...postFormatted
+    ...postFormatted,
+    ...mentorFormatted
   });
   fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body })
     .then(()=>{ document.getElementById('submit-success').style.display='block'; })
     .catch(()=>alert('There was a problem submitting. Please try again.'));
 }
 
-function restart() { state={screen:'intake',section:0,intake:{name:'',age:'',location:'',regional:'',status:'',type:''},answers:{},checkboxAnswers:{},textAnswers:{},scores:{}}; window.scrollTo({top:0}); render(); }
+function restart() { state={screen:'intake',section:0,intake:{name:'',age:'',location:'',regional:'',status:'',type:''},answers:{},checkboxAnswers:{},textAnswers:{},mentorData:{},scores:{}}; window.scrollTo({top:0}); render(); }
 function attachHandlers() {}
 render();
 </script>
